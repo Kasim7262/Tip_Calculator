@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var billAmtController = TextEditingController();
+
+  int perCount = 1;
+  int tipPercent = 0;
+  num totalBillAmt = 0.0;
+  num totalTipAmt = 0.0;
+  num totalAmt = 0.0;
+  num perPersonAmt = 0.0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -170,12 +183,15 @@ class HomePage extends StatelessWidget {
           Expanded(
             flex: 4,
             child: TextField(
-              // controller: ,
+              controller: billAmtController,
               decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
                 // prefixText: "\$",
-                prefixIcon: Icon(Icons.attach_money,fontWeight: FontWeight.bold,),
+                prefixIcon: Icon(
+                  Icons.attach_money,
+                  fontWeight: FontWeight.bold,
+                ),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
                     style: BorderStyle.none,
@@ -221,33 +237,39 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          // padding: EdgeInsets.all(13),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xFF03C9BD),
-                          ),
+                        child: InkWell(
+                          onTap: (){
+                            tipPercent = 10;
+                            updateResult();
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            // padding: EdgeInsets.all(13),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFF03C9BD),
+                            ),
 
-                          child: Center(
-                            child: Text.rich(
-                              TextSpan(
-                                text: "10",
-                                style: TextStyle(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "%",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                            child: Center(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: "10",
+                                  style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
                                   ),
-                                ],
+                                  children: [
+                                    TextSpan(
+                                      text: "%",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -255,33 +277,39 @@ class HomePage extends StatelessWidget {
                       ),
                       SizedBox(width: 11),
                       Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          // padding: EdgeInsets.all(13),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xFF03C9BD),
-                          ),
+                        child: InkWell(
+                          onTap: (){
+                            tipPercent = 15;
+                            updateResult();
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            // padding: EdgeInsets.all(13),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFF03C9BD),
+                            ),
 
-                          child: Center(
-                            child: Text.rich(
-                              TextSpan(
-                                text: "15",
-                                style: TextStyle(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "%",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                            child: Center(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: "15",
+                                  style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
                                   ),
-                                ],
+                                  children: [
+                                    TextSpan(
+                                      text: "%",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -289,33 +317,39 @@ class HomePage extends StatelessWidget {
                       ),
                       SizedBox(width: 11),
                       Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          // padding: EdgeInsets.all(13),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xFF03C9BD),
-                          ),
+                        child: InkWell(
+                          onTap: (){
+                            tipPercent = 20;
+                            updateResult();
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            // padding: EdgeInsets.all(13),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFF03C9BD),
+                            ),
 
-                          child: Center(
-                            child: Text.rich(
-                              TextSpan(
-                                text: "20",
-                                style: TextStyle(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "%",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                            child: Center(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: "20",
+                                  style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
                                   ),
-                                ],
+                                  children: [
+                                    TextSpan(
+                                      text: "%",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -380,21 +414,29 @@ class HomePage extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF03c9bf),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
+                  child: InkWell(
+                    onTap: () {
+                      if (perCount > 1) {
+                        perCount--;
+                      }
+                      updateResult();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF03c9bf),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "-",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
+                      child: Center(
+                        child: Text(
+                          "-",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -406,7 +448,7 @@ class HomePage extends StatelessWidget {
                     color: Colors.white,
                     child: Center(
                       child: Text(
-                        "2",
+                        "$perCount",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -417,21 +459,27 @@ class HomePage extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF03c9bf),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
+                  child: InkWell(
+                    onTap: () {
+                      perCount++;
+                      updateResult();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF03c9bf),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "+",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
+                      child: Center(
+                        child: Text(
+                          "+",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -443,5 +491,21 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void updateResult(){
+
+    if(billAmtController.text != ""){
+      totalBillAmt = double.parse(billAmtController.text.toString());
+      totalTipAmt = totalBillAmt*(tipPercent/100);
+      totalAmt = totalBillAmt + totalTipAmt;
+      perPersonAmt = totalAmt/perCount;
+
+      setState(() {
+
+      });
+    } else{
+      perCount = 1;
+    }
   }
 }
