@@ -7,6 +7,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var billAmtController = TextEditingController();
+  var customTipController = TextEditingController();
 
   int perCount = 1;
   int tipPercent = 0;
@@ -14,11 +15,12 @@ class _HomePageState extends State<HomePage> {
   num totalTipAmt = 0.0;
   num totalAmt = 0.0;
   num perPersonAmt = 0.0;
-
+  bool isCustomTip = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF5F3F4),
       body: SafeArea(
         child: Padding(
@@ -94,7 +96,9 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
                 children: [
                   TextSpan(
-                    text: "000",
+                    text: perPersonAmt == 0.0
+                        ? "000"
+                        : perPersonAmt.toStringAsFixed(2),
                     style: TextStyle(fontSize: 47, fontWeight: FontWeight.w900),
                   ),
                 ],
@@ -117,7 +121,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         children: [
                           TextSpan(
-                            text: "000",
+                            text: totalBillAmt == 0.0
+                                ? "000"
+                                : totalBillAmt.toStringAsFixed(2),
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
@@ -141,7 +147,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         children: [
                           TextSpan(
-                            text: "000",
+                            text: totalTipAmt == 0.0
+                                ? "000"
+                                : totalTipAmt.toStringAsFixed(2),
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
@@ -201,6 +209,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               keyboardType: TextInputType.number,
+              onChanged: (_) {
+                updateResult();
+              },
             ),
           ),
         ],
@@ -238,7 +249,9 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
+                            isCustomTip = false;
+                            customTipController.clear();
                             tipPercent = 10;
                             updateResult();
                           },
@@ -278,7 +291,9 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(width: 11),
                       Expanded(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
+                            isCustomTip = false;
+                            customTipController.clear();
                             tipPercent = 15;
                             updateResult();
                           },
@@ -318,7 +333,9 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(width: 11),
                       Expanded(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
+                            isCustomTip = false;
+                            customTipController.clear();
                             tipPercent = 20;
                             updateResult();
                           },
@@ -360,24 +377,65 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 11),
                 Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(11),
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF03C9BD),
-                    ),
-
-                    child: Text(
-                      "Custom tip",
-                      style: TextStyle(
-                        fontSize: 21,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
+                  child: Stack(
+                    children: [
+                      TextField(
+                        controller: customTipController,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          // prefixText: "\$",
+                          prefixIcon: Icon(
+                            Icons.percent_outlined,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              style: BorderStyle.none,
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          if (value.isEmpty) {
+                            tipPercent = 0;
+                          } else {
+                            tipPercent = int.tryParse(value) ?? 0;
+                          }
+                          updateResult();
+                        },
                       ),
-                      textAlign: TextAlign.center,
-                    ),
+                      isCustomTip
+                          ? Container()
+                          : InkWell(
+                              onTap: () {
+                                isCustomTip = true;
+                                setState(() {});
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(11),
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xFF03C9BD),
+                                ),
+
+                                child: Text(
+                                  "Custom tip",
+                                  style: TextStyle(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                    ],
                   ),
                 ),
               ],
@@ -493,18 +551,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void updateResult(){
-
-    if(billAmtController.text != ""){
+  void updateResult() {
+    if (billAmtController.text != "") {
       totalBillAmt = double.parse(billAmtController.text.toString());
-      totalTipAmt = totalBillAmt*(tipPercent/100);
+      totalTipAmt = totalBillAmt * (tipPercent / 100);
       totalAmt = totalBillAmt + totalTipAmt;
-      perPersonAmt = totalAmt/perCount;
+      perPersonAmt = totalAmt / perCount;
 
-      setState(() {
-
-      });
-    } else{
+      setState(() {});
+    } else {
       perCount = 1;
     }
   }
